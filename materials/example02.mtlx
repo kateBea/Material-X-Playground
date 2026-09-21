@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+
+<materialx version="1.39" colorspace="lin_rec709">
+
+    <nodegraph name="NG_PBR">
+
+        <image name="BaseColorTexture" type="color3">
+            <input
+                name="file"
+                type="filename"
+                value="basecolor.png"
+                colorspace="srgb_texture"
+            />
+        </image>
+
+        <image name="RoughnessTexture" type="float">
+            <input
+                name="file"
+                type="filename"
+                value="roughness.png"
+            />
+        </image>
+
+        <image name="MetallicTexture" type="float">
+            <input
+                name="file"
+                type="filename"
+                value="metallic.png"
+            />
+        </image>
+
+        <image name="NormalTexture" type="vector3">
+            <input
+                name="file"
+                type="filename"
+                value="normal.png"
+            />
+        </image>
+
+        <normalmap name="NormalMap" type="vector3">
+            <input
+                name="in"
+                type="vector3"
+                nodename="NormalTexture"
+            />
+        </normalmap>
+
+        <output
+            name="BaseColor"
+            type="color3"
+            nodename="BaseColorTexture"
+        />
+
+        <output
+            name="Roughness"
+            type="float"
+            nodename="RoughnessTexture"
+        />
+
+        <output
+            name="Metallic"
+            type="float"
+            nodename="MetallicTexture"
+        />
+
+        <output
+            name="Normal"
+            type="vector3"
+            nodename="NormalMap"
+        />
+
+    </nodegraph>
+
+    <standard_surface name="TexturedPBR_Surface" type="surfaceshader">
+
+        <input
+            name="base"
+            type="float"
+            value="1.0"
+        />
+
+        <input
+            name="base_color"
+            type="color3"
+            nodegraph="NG_PBR"
+            output="BaseColor"
+        />
+
+        <input
+            name="metalness"
+            type="float"
+            nodegraph="NG_PBR"
+            output="Metallic"
+        />
+
+        <input
+            name="specular_roughness"
+            type="float"
+            nodegraph="NG_PBR"
+            output="Roughness"
+        />
+
+        <input
+            name="normal"
+            type="vector3"
+            nodegraph="NG_PBR"
+            output="Normal"
+        />
+
+    </standard_surface>
+
+    <surfacematerial name="TexturedPBR" type="material">
+
+        <input
+            name="surfaceshader"
+            type="surfaceshader"
+            nodename="TexturedPBR_Surface"
+        />
+
+    </surfacematerial>
+
+</materialx>
